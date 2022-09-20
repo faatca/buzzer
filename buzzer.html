@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Game Buzzer</title>
+	<style type="text/css">
+		h1 {
+			color: #1720A3;
+			text-align: center;
+			text-transform: uppercase;
+		}
+		#winner {
+			background-color: #2E3AF0;
+			color: white;
+			font: 1.5em "Helvetica", sans-serif;
+			margin: 2em;
+			padding: 2em;
+			text-align: center;
+		}
+		#losers {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;
+		}
+		#losers div {
+			background-color: #E4F03A;
+			color: #1720A3;
+			font-size: 12pt;
+			padding: 1em;
+			margin: 1em;
+		}
+	</style>
+</head>
+<body>
+	<h1>Game Buzzer</h1>
+	<div id="winner" hidden></div>
+	<div id="losers"></div>
+
+	<script type="text/javascript">
+		const successSound = new Audio("success.mp3");
+		const failSound = new Audio("fail.mp3");
+
+		const winnerDiv = document.getElementById("winner");
+		const loserDiv = document.getElementById("losers");
+		const body = document.body;
+
+		document.addEventListener("keypress", logKey);
+
+		const buzzedIn = [];
+
+		function logKey(e) {
+			if (e.key == ' ') {
+				winnerDiv.textContent = '';
+				loserDiv.textContent = '';
+				buzzedIn.length = 0;
+				winnerDiv.hidden = true;
+			}
+			else if (buzzedIn.includes(e.key)) {
+				// Do nothing
+			}
+			else if (buzzedIn.length === 0) {
+				successSound.play();
+				winnerDiv.textContent = `Player ${e.key}`;
+				winnerDiv.hidden = false;
+				buzzedIn.push(e.key);
+			}
+			else {
+				failSound.play();
+				buzzedIn.push(e.key);
+				var d = document.createElement("div");
+				d.textContent = `Player ${e.key}`;
+				loserDiv.appendChild(d);
+			}
+		}
+	</script>
+</body>
+</html>
